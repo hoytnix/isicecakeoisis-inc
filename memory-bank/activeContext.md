@@ -17,15 +17,14 @@
 - Transformed Page 9 / Slide 09 into a dedicated showcase for **TehWiz Productions** ("Hacking FLOSS & Composing Code With Prose Since 2009").
 - Preserved Hallmark Seal stamping mechanism and 3-tab terminal inspector.
 
-## GitHub Pages CI/CD Workflow (.github/workflows/deploy.yml)
-- **Automated GitHub Pages Deployment Action**:
-  - Implemented GitHub Actions workflow triggered on push to `main` and `master`, plus manual `workflow_dispatch`.
-  - Configured with official GitHub Actions Pages suite: `actions/configure-pages@v5`, `actions/upload-pages-artifact@v3`, and `actions/deploy-pages@v4`.
-  - Added dependency install fallback (`npm ci` if `package-lock.json` exists, else `npm install`).
-  - Added `dist/.nojekyll` to prevent Jekyll processing of Vite asset hashes.
-  - Added `dist/404.html` fallback for single-page routing resilience.
-  - Updated `vite.config.ts` with `base: './'` so static assets resolve cleanly on custom domains and subpath repos (`https://<user>.github.io/<repo>/`).
-  - Placed static `public/llms.txt` so machine-readable manifest is served on static GitHub Pages.
+## GitHub Pages CI/CD Workflow & Deploy Bug Resolution (.github/workflows/deploy.yml)
+- **CI/CD Build Failure Diagnosis & Fix**:
+  - Diagnosed `npm error Cannot read properties of null (reading 'edgesOut')` that failed GitHub Actions runs on Ubuntu 24.04 runners.
+  - Root Cause: Dependency conflict between `"esbuild": "^0.25.0"` and `"vite": "^8.3.0"` (which expects esbuild `^0.27.0 || ^0.28.0`), which caused npm 10.8's Arborist engine to crash on missing peer edges when building an ideal tree without a lockfile.
+  - Resolved peer version in `package.json` by updating `esbuild` to `^0.28.0` and adding `--format=esm` to the server build bundle.
+  - Generated and committed a clean, deterministic `package-lock.json` with 0 vulnerabilities.
+  - Upgraded GitHub Actions workflow `.github/workflows/deploy.yml` to `node-version: 22` with npm caching (`cache: 'npm'`), and hardened the installation step with an automatic fallback (`npm ci || npm install --legacy-peer-deps`).
+  - Preserved static deployment features: `dist/.nojekyll`, `dist/404.html` SPA routing fallback, relative Vite base path (`base: './'`), and `public/llms.txt`.
 
 ## High-Traffic B2A Agent Discovery & SEO Architecture (Completed)
 - **Badass `/llms.txt` Machine Manifest**:

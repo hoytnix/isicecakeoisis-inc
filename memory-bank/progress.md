@@ -68,10 +68,16 @@
   - Changed "Launch Direct Mail" to prominent, primary "Send Email" button with personalized, pre-formatted draft to `cakeri.paper@gmail.com`.
   - Added handy "Copy Draft" button for users on webmail platforms.
   - Replaced fake terminal logs with a reassuring personal reply guarantee from Michael Scott Hoyt.
+- [x] Resolved GitHub Actions Deployment Failure:
+  - Fixed npm Arborist dependency tree crash (`Cannot read properties of null (reading 'edgesOut')`)
+  - Resolved peer conflict between `esbuild` and `vite` by updating `esbuild` to `^0.28.0` in `package.json`
+  - Added `--format=esm` to esbuild server compilation step in `package.json`
+  - Generated deterministic `package-lock.json`
+  - Upgraded `.github/workflows/deploy.yml` to Node.js 22 with npm cache and resilient fallback (`npm ci || npm install --legacy-peer-deps`)
 - [x] Created GitHub Actions CI/CD Workflow (`.github/workflows/deploy.yml`):
   - Automatic deployment to GitHub Pages on push to `main` and `master`, plus manual `workflow_dispatch` trigger.
   - Configured with official GitHub Actions Pages suite: `actions/configure-pages@v5`, `actions/upload-pages-artifact@v3`, and `actions/deploy-pages@v4`.
-  - Automated dependency installation (`npm ci` / `npm install`), Vite production build, `.nojekyll` touch, and `404.html` SPA fallback.
+  - Automated dependency installation with fallback, Vite production build, `.nojekyll` touch, and `404.html` SPA fallback.
   - Configured `vite.config.ts` with relative base path (`base: './'`) to support repository subpaths and custom domains.
   - Generated `public/llms.txt` static manifest for agent legibility on static hosting.
 - [x] Implemented badass `/llms.txt` manifest:
