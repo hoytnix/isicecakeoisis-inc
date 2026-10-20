@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ISICECAKEOISIS INC. // Business-to-Agent (B2A) Systems Architecture</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#05060A',
+                        carbon: '#0D1017',
+                        cyan: {
+                            400: '#38BDF8',
+                            500: '#0EA5E9',
+                        },
+                        gold: '#F59E0B',
+                        slate: {
+                            850: '#0f172a',
+                            900: '#0b0f19',
+                        }
+                    },
+                    fontFamily: {
+                        display: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- JSON-LD Organization Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "ISICECAKEOISIS INC.",
+      "url": "https://isicecakeoisis.com",
+      "founder": {
+        "@type": "Person",
+        "name": "Michael Scott Hoyt",
+        "jobTitle": "Founder & Systems Architect"
+      },
+      "sameAs": [
+        "https://tehwiz.com",
+        "https://aevloc.com",
+        "https://purplecanarylab.com",
+        "https://caffeinemd.wiki",
+        "https://alembic.quest",
+        "https://alchememe.com"
+      ]
+    }
+    </script>
+
+    <style>
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            background-color: #05060A;
+            color: #F8FAFC;
+        }
+        
+        .snap-section {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+            min-height: 100vh;
+            min-height: 100dvh;
+            width: 100vw;
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-top: 4.5rem;
+            padding-bottom: 4.5rem;
+        }
+
+        @media (min-height: 700px) {
+            .snap-section {
+                padding-top: 0;
+                padding-bottom: 0;
+            }
+        }
+
+        /* Hide scrollbars */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .glass-panel {
+            background: rgba(13, 16, 23, 0.75);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(56, 189, 248, 0.12);
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .ambient-glow {
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, rgba(5, 6, 10, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+
+        .animate-pulse-glow {
+            animation: pulseGlow 6s ease-in-out infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+
+        .scanline::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.4), transparent);
+            animation: scanline 4s linear infinite;
+            pointer-events: none;
+        }
+
+        body.low-power * {
+            animation: none !important;
+            transition: none !important;
+        }
+        body.low-power .ambient-glow {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-slate-100 font-sans selection:bg-cyan-500 selection:text-obsidian antialiased">
+
+    <header class="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between pointer-events-none bg-obsidian/40 backdrop-blur-md border-b border-slate-800/40">
+        <div class="pointer-events-auto flex items-center gap-3">
+            <a href="#slide-1" class="font-display font-bold tracking-tighter text-xs sm:text-base flex items-center gap-2 group">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span class="text-slate-100 group-hover:text-cyan-400 transition-colors">ISICECAKEOISIS INC.</span>
+            </a>
+            <span class="hidden md:inline-block text-[10px] font-mono text-slate-500 px-2 py-0.5 rounded border border-slate-800">B2A ARCHITECTURE</span>
+        </div>
+
+        <div class="pointer-events-auto flex items-center gap-2 sm:gap-3">
+            <!-- Menu Trigger Button (Icon Only) -->
+            <button onclick="toggleMenuModal()" class="glass-panel p-2.5 sm:px-3 sm:py-2 rounded-lg text-xs font-mono flex items-center justify-center hover:border-cyan-400/50 text-cyan-400 transition-all shadow-lg group" title="System Menu">
+                <i data-lucide="menu" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+            </button>
+
+            <!-- Inquire / Chat Bubble Button (Icon Only) -->
+            <button onclick="openInvestorModal()" class="bg-cyan-500 hover:bg-cyan-400 text-obsidian p-2.5 sm:px-4 sm:py-2 rounded-lg text-xs font-mono font-bold tracking-wide transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2" title="Request Investor Materials">
+                <i data-lucide="message-square" class="w-4 h-4"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Side Dot Navigation -->
+    <nav aria-label="Deck Navigation" class="fixed right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-2.5 pointer-events-auto" id="dot-nav">
+        <!-- Generated dynamically via JS -->
+    </nav>
+
+    <!-- Slide Position Indicator -->
+    <div class="fixed bottom-3 sm:bottom-4 left-4 sm:left-8 z-40 text-[10px] sm:text-xs font-mono text-slate-500 pointer-events-none flex items-center gap-2 bg-obsidian/60 px-2.5 py-1 rounded-md border border-slate-800/60 backdrop-blur">
+        <span id="current-slide-num" class="text-cyan-400 font-bold">01</span>
+        <span class="text-slate-700">/</span>
+        <span>09</span>
+        <span class="text-slate-700 mx-1">//</span>
+        <span id="current-slide-title" class="text-slate-400 uppercase tracking-widest text-[9px] sm:text-[10px]">Goomba Origin</span>
+    </div>
+
+    <!-- Main Cinematic Scroll Container -->
+    <main class="no-scrollbar" id="deck-container">
+
+        <section id="slide-1" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow top-1/4 left-1/4"></div>
+            <div class="max-w-4xl w-full mx-auto relative z-10 space-y-5 sm:space-y-6">
+                <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.15]">
+                    "When I was five years old, I asked my uncle how the Goombas moved in my Mario game..."
+                </h1>
+                <div class="glass-card p-5 sm:p-7 rounded-2xl space-y-4 border-l-2 border-cyan-400 shadow-xl">
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed font-sans">
+                        "...and he replied, that’s AI or artificial intelligence; to which I replied that I wanted to get my PhD in AI so I could make video characters… now I’m currently working on my Master of Science in AI and Yuli, the AI NPC SDK."
+                    </p>
+                    <div class="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono text-slate-400">
+                        <span class="flex items-center gap-1.5"><i data-lucide="cpu" class="w-3.5 h-3.5 text-cyan-400"></i> MS.AI Student</span>
+                        <span class="flex items-center gap-1.5"><i data-lucide="git-branch" class="w-3.5 h-3.5 text-cyan-400"></i> B2A Architecture</span>
+                        <span class="flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-cyan-400"></i> @hoytnix</span>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
+                    <button onclick="openInvestorModal()" class="bg-cyan-500 hover:bg-cyan-400 text-obsidian px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-display font-bold text-xs sm:text-sm tracking-wide transition-all shadow-lg shadow-cyan-500/25 flex items-center gap-2 group">
+                        <span>Request Investor Materials</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                    <a href="#slide-2" class="glass-panel hover:border-cyan-400/50 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-display font-semibold text-xs sm:text-sm text-slate-300 hover:text-white transition-all flex items-center gap-2">
+                        <span>Explore the Thesis & Portfolio</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-2" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow bottom-1/4 right-1/4"></div>
+            <div class="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-6 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>02 // INVESTMENT THESIS</span>
+                    </div>
+                    <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                        The Screen Was the Bottleneck. Agents Are the Market.
+                    </h2>
+                    <div class="space-y-3 text-slate-300 text-xs sm:text-sm leading-relaxed max-h-[45vh] sm:max-h-none overflow-y-auto no-scrollbar">
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border-l-2 border-cyan-400">
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mb-1">01 // Interface Shift</h3>
+                            <p class="text-slate-400">Agents are the next interface. Human users are increasingly delegating discovery, workflows, and execution to autonomous software agents.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border-l-2 border-cyan-400">
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mb-1">02 // Defensible Moat</h3>
+                            <p class="text-slate-400">Machine legibility is the moat. When an agent chooses a tool, it skips brittle DOM scraping in favor of deterministic APIs, MCP servers, Skills, and structured llms.txt manifests.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border-l-2 border-cyan-400">
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mb-1">03 // Edge Economics</h3>
+                            <p class="text-slate-400">Embedded LLMs win on latency, privacy, and cost. Fine-tuned tiny models running offline on local silicon eliminate per-token cloud taxation and network lag.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border-l-2 border-cyan-400">
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mb-1">04 // Distribution Capture</h3>
+                            <p class="text-slate-400">Agent-instrumented companies own the next decade of distribution. Every division under ISICECAKEOISIS INC. is engineered from day one for both human utility and direct agent operation.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 hidden lg:flex flex-col items-center justify-center">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl w-full relative overflow-hidden scanline">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-cyan-400">FIG 02.A // B2A AGENT MESH</span>
+                            <span class="text-[10px] font-mono text-slate-500 bg-slate-900 px-2 py-1 rounded">MCP + LLMS.TXT</span>
+                        </div>
+                        <!-- Inline SVG Agent Mesh Illustration -->
+                        <div class="w-full h-56 sm:h-72 flex items-center justify-center relative">
+                            <svg viewBox="0 0 400 300" class="w-full h-full">
+                                <defs>
+                                    <radialGradient id="meshGlow" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.3"/>
+                                        <stop offset="100%" stop-color="#05060A" stop-opacity="0"/>
+                                    </radialGradient>
+                                </defs>
+                                <circle cx="200" cy="150" r="120" fill="url(#meshGlow)" />
+                                <!-- Connecting Lines -->
+                                <g stroke="#38BDF8" stroke-opacity="0.3" stroke-width="1.5" stroke-dasharray="4 4">
+                                    <line x1="200" y1="150" x2="100" y2="80" />
+                                    <line x1="200" y1="150" x2="300" y2="80" />
+                                    <line x1="200" y1="150" x2="100" y2="220" />
+                                    <line x1="200" y1="150" x2="300" y2="220" />
+                                    <line x1="100" y1="80" x2="300" y2="80" />
+                                    <line x1="100" y1="220" x2="300" y2="220" />
+                                </g>
+                                <!-- Nodes -->
+                                <g class="nodes">
+                                    <circle cx="200" cy="150" r="28" fill="#0D1017" stroke="#38BDF8" stroke-width="2" />
+                                    <text x="200" y="154" fill="#38BDF8" font-family="JetBrains Mono" font-size="10" text-anchor="middle" font-weight="bold">B2A CORE</text>
+                                    
+                                    <g transform="translate(100, 80)">
+                                        <circle r="22" fill="#0D1017" stroke="#F59E0B" stroke-width="1.5" />
+                                        <text x="0" y="4" fill="#F59E0B" font-family="JetBrains Mono" font-size="9" text-anchor="middle">MCP</text>
+                                    </g>
+                                    <g transform="translate(300, 80)">
+                                        <circle r="22" fill="#0D1017" stroke="#38BDF8" stroke-width="1.5" />
+                                        <text x="0" y="4" fill="#38BDF8" font-family="JetBrains Mono" font-size="9" text-anchor="middle">API</text>
+                                    </g>
+                                    <g transform="translate(100, 220)">
+                                        <circle r="22" fill="#0D1017" stroke="#38BDF8" stroke-width="1.5" />
+                                        <text x="0" y="4" fill="#38BDF8" font-family="JetBrains Mono" font-size="9" text-anchor="middle">SKILLS</text>
+                                    </g>
+                                    <g transform="translate(300, 220)">
+                                        <circle r="22" fill="#0D1017" stroke="#38BDF8" stroke-width="1.5" />
+                                        <text x="0" y="4" fill="#38BDF8" font-family="JetBrains Mono" font-size="9" text-anchor="middle">llms.txt</text>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                            <span>Founder: Michael Scott Hoyt (@hoytnix)</span>
+                            <span class="text-cyan-400">Solo + AI Architecture</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-3" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow top-1/3 left-1/2 -translate-x-1/2"></div>
+            <div class="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-6 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>03 // FLAGSHIP SDK</span>
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Most Popular App</span>
+                        <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                            Yuli — AI Character SDK (WIP) with On-Device Personality Engine.
+                        </h2>
+                    </div>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        Yuli is an on-device tiny-LM personality engine powered by Qwen2.5-0.5B fine-tuned on Reddit conversations. It detects shifting personality patterns mid-conversation, runs fully offline on an iPhone, and is the founder's most popular app.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">MODEL ARCHITECTURE</span>
+                            <h3 class="font-display font-bold text-white text-sm mt-1">Qwen2.5-0.5B</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Fine-tuned on Reddit conversations for dynamic persona detection.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">RUNTIME FOOTPRINT</span>
+                            <h3 class="font-display font-bold text-white text-sm mt-1">100% Offline iPhone</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Zero cloud inference latency or external API dependency.</p>
+                        </div>
+                    </div>
+                    <div class="pt-1 text-[11px] font-mono text-slate-400 flex items-center gap-2">
+                        <span class="text-cyan-400">ROADMAP:</span> Unreal & Unity engine plugins under planned freemium BSL-1.1 licensing.
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 hidden lg:flex flex-col items-center justify-center">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl w-full relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-cyan-400">FIG 03.A // ON-DEVICE RADAR</span>
+                            <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950 px-2 py-1 rounded border border-cyan-800">OFFLINE IPHONE RUNTIME</span>
+                        </div>
+                        <!-- Inline SVG Phone Radar Animation -->
+                        <div class="w-full h-56 sm:h-72 flex items-center justify-center relative">
+                            <svg viewBox="0 0 300 300" class="w-full h-full">
+                                <rect x="90" y="20" width="120" height="260" rx="20" fill="#0D1017" stroke="#38BDF8" stroke-width="2" />
+                                <rect x="110" y="32" width="80" height="12" rx="6" fill="#05060A" />
+                                <circle cx="150" cy="150" r="70" fill="none" stroke="#38BDF8" stroke-opacity="0.2" stroke-width="1" />
+                                <circle cx="150" cy="150" r="45" fill="none" stroke="#38BDF8" stroke-opacity="0.3" stroke-width="1" />
+                                <circle cx="150" cy="150" r="20" fill="none" stroke="#38BDF8" stroke-opacity="0.4" stroke-width="1" />
+                                <g>
+                                    <line x1="150" y1="150" x2="150" y2="80" stroke="#38BDF8" stroke-width="2" stroke-linecap="round">
+                                        <animateTransform attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" dur="4s" repeatCount="indefinite"/>
+                                    </line>
+                                </g>
+                                <circle cx="170" cy="120" r="4" fill="#F59E0B">
+                                    <animate attributeName="opacity" values="0.2;1;0.2" dur="2s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="130" cy="180" r="4" fill="#38BDF8">
+                                    <animate attributeName="opacity" values="1;0.2;1" dur="3s" repeatCount="indefinite"/>
+                                </circle>
+                                <text x="150" y="245" fill="#38BDF8" font-family="JetBrains Mono" font-size="9" text-anchor="middle">YULI // QWEN2.5-0.5B</text>
+                            </svg>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                            <span>SHIFT DETECTED [OFFLINE]</span>
+                            <span class="text-cyan-400">BSL-1.1 // UNREAL+UNITY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-4" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow bottom-1/3 left-1/4"></div>
+            <div class="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-6 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>04 // REPUTATION SAAS + HARDWARE</span>
+                    </div>
+                    <div class="space-y-2">
+                        <a href="https://aevloc.com" target="_blank" class="text-xs font-mono text-cyan-400 hover:underline flex items-center gap-1.5">
+                            <span>aevloc.com</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
+                        <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                            Aevloc — Physical NFC Countertop Stands Meet Agent-Operable SaaS.
+                        </h2>
+                    </div>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        Tap-to-review reputation SaaS built for local businesses. Aevloc sells physical NFC tap-to-review countertop stands equipped with encrypted NTAG215 chips + QR, backed by a machine-legible API designed so autonomous agents can operate it.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">STARTER TIER</span>
+                            <h3 class="font-display font-bold text-white text-sm mt-1">$15/mo or $97/yr</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Predictable SaaS economics; dedicated agency tier exists.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">COUNTERTOP STANDS</span>
+                            <h3 class="font-display font-bold text-white text-sm mt-1">Encrypted NTAG215</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Physical NFC tap stands paired with instant QR fallback.</p>
+                        </div>
+                    </div>
+                    <div class="pt-1">
+                        <a href="https://aevloc.com" target="_blank" class="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-colors bg-cyan-950/40 px-4 py-2 rounded-lg border border-cyan-800/60">
+                            <span>INSPECT AEVLOC.COM</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 hidden lg:flex flex-col items-center justify-center">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl w-full relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-cyan-400">FIG 04.A // NTAG215 TAP RIPPLE</span>
+                            <span class="text-[10px] font-mono text-gold bg-amber-950/40 px-2 py-1 rounded border border-amber-800/50">5-STAR BLOOM</span>
+                        </div>
+                        <!-- Inline SVG NFC Tap Ripple Illustration -->
+                        <div class="w-full h-56 sm:h-72 flex items-center justify-center relative">
+                            <svg viewBox="0 0 300 300" class="w-full h-full">
+                                <circle cx="150" cy="150" r="30" fill="#0D1017" stroke="#38BDF8" stroke-width="2"/>
+                                <text x="150" y="154" fill="#38BDF8" font-family="JetBrains Mono" font-size="9" text-anchor="middle">NTAG215</text>
+                                <circle cx="150" cy="150" r="30" fill="none" stroke="#38BDF8" stroke-width="1.5">
+                                    <animate attributeName="r" values="30;120" dur="3s" repeatCount="indefinite"/>
+                                    <animate attributeName="opacity" values="1;0" dur="3s" repeatCount="indefinite"/>
+                                </circle>
+                                <circle cx="150" cy="150" r="30" fill="none" stroke="#F59E0B" stroke-width="1.5">
+                                    <animate attributeName="r" values="30;120" begin="1.5s" dur="3s" repeatCount="indefinite"/>
+                                    <animate attributeName="opacity" values="1;0" begin="1.5s" dur="3s" repeatCount="indefinite"/>
+                                </circle>
+                                <polygon points="150,60 153,68 162,68 155,73 157,81 150,76 142,81 144,73 138,68 147,68" fill="#F59E0B">
+                                    <animateTransform attributeName="transform" type="rotate" from="0 150 150" to="360 150 150" dur="10s" repeatCount="indefinite"/>
+                                </polygon>
+                            </svg>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                            <span>NTAG215 + QR</span>
+                            <span class="text-cyan-400">AGENT API READY</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-5" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow top-1/4 right-1/3"></div>
+            <div class="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-6 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>05 // HARM-REDUCTION LAB & PUBLISHING</span>
+                    </div>
+                    <div class="space-y-2">
+                        <a href="https://purplecanarylab.com" target="_blank" class="text-xs font-mono text-cyan-400 hover:underline flex items-center gap-1.5">
+                            <span>purplecanarylab.com</span>
+                            <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
+                        <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                            Purple Canary — Accessible Paper-Chromatography Harm Reduction.
+                        </h2>
+                    </div>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        Practical, non-sensational physical chemistry for consumer safety. Purple Canary produces $25 paper-chromatography harm-reduction test kits alongside the companion paperback "What Was In That Joint Bro!?" ($4.99 paperback).
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">ANALYTICAL KIT</span>
+                            <h3 class="font-display font-bold text-white text-sm mt-1">$25 Test Kit</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Clear capillary separation of compounds on calibrated chromatography strips.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">PUBLICATION</span>
+                            <h3 class="font-display font-bold text-white text-sm mt-1">$4.99 Paperback</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">"What Was In That Joint Bro!?" field guide bridging consumer education.</p>
+                        </div>
+                    </div>
+                    <div class="pt-1">
+                        <a href="https://purplecanarylab.com" target="_blank" class="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-colors bg-cyan-950/40 px-4 py-2 rounded-lg border border-cyan-800/60">
+                            <span>VISIT PURPLECANARYLAB.COM</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 hidden lg:flex flex-col items-center justify-center">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl w-full relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-cyan-400">FIG 05.A // CHROMATOGRAPHY STRIP</span>
+                            <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950 px-2 py-1 rounded border border-cyan-800">REAL-TIME ELUTION</span>
+                        </div>
+                        <!-- Inline SVG Chromatography Elution Illustration -->
+                        <div class="w-full h-56 sm:h-72 flex items-center justify-center relative">
+                            <svg viewBox="0 0 300 300" class="w-full h-full">
+                                <rect x="110" y="200" width="80" height="50" rx="4" fill="none" stroke="#38BDF8" stroke-width="2"/>
+                                <rect x="115" y="215" width="70" height="30" fill="#38BDF8" fill-opacity="0.15"/>
+                                <text x="150" y="233" fill="#38BDF8" font-family="JetBrains Mono" font-size="8" text-anchor="middle">SOLVENT</text>
+                                <rect x="142" y="60" width="16" height="150" fill="#0D1017" stroke="#F8FAFC" stroke-width="1.5" rx="2"/>
+                                <ellipse cx="150" cy="180" rx="6" ry="3" fill="#38BDF8">
+                                    <animate attributeName="cy" values="210;180;180" dur="4s" repeatCount="indefinite"/>
+                                </ellipse>
+                                <ellipse cx="150" cy="130" rx="6" ry="3" fill="#F59E0B">
+                                    <animate attributeName="cy" values="210;130;130" dur="4s" repeatCount="indefinite"/>
+                                </ellipse>
+                                <ellipse cx="150" cy="85" rx="6" ry="3" fill="#34D399">
+                                    <animate attributeName="cy" values="210;85;85" dur="4s" repeatCount="indefinite"/>
+                                </ellipse>
+                            </svg>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                            <span>ORIGIN</span>
+                            <span class="text-cyan-400">Rf 0.28 // 0.54 // 0.79</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-6" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow bottom-1/4 right-1/4"></div>
+            <div class="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-6 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>06 // NARRATIVE CANON & ECOSYSTEM</span>
+                    </div>
+                    <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                        Structured, Agent-Ingestible Lore & Knowledge OS.
+                    </h2>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        Original media IP and open-source software architected as structured canon, fronted publicly by TehWiz Productions (<a href="https://tehwiz.com" target="_blank" class="text-cyan-400 hover:underline">tehwiz.com</a>) — "the face of the SaaS products under ISICECAKEOISIS INC."
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[45vh] sm:max-h-none overflow-y-auto no-scrollbar">
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">PUBLISHED BOOK</span>
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mt-1">"What Was In That Joint Bro!?"</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">$4.99 paperback anchoring the Purple Canary canon.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">MUSIC RELEASE</span>
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mt-1">CAKERÏ Music EP</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Sonic worldbuilding embedded in the corporate universe.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">PUBLIC VIDEO SERIES</span>
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mt-1">Project #NBA</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Public video chronicle made for his kids.</p>
+                        </div>
+                        <div class="glass-card p-3 sm:p-4 rounded-xl border border-slate-800">
+                            <span class="text-[10px] font-mono text-cyan-400">ANIMATION IP</span>
+                            <h3 class="font-display font-bold text-white text-xs sm:text-sm mt-1">YOUNG SLIME LIFE</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">Original anime project expanding the structured lore.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 hidden lg:flex flex-col items-center justify-center">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl w-full relative overflow-hidden">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-mono text-cyan-400">FIG 06.A // CANON GRAPH</span>
+                            <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950 px-2 py-1 rounded border border-cyan-800">IP + KNOWLEDGE OS</span>
+                        </div>
+                        <!-- Inline SVG Canon Constellation -->
+                        <div class="w-full h-56 sm:h-72 flex items-center justify-center relative">
+                            <svg viewBox="0 0 300 300" class="w-full h-full">
+                                <g stroke="#38BDF8" stroke-opacity="0.3" stroke-width="1">
+                                    <line x1="150" y1="150" x2="80" y2="90" />
+                                    <line x1="150" y1="150" x2="220" y2="90" />
+                                    <line x1="150" y1="150" x2="80" y2="210" />
+                                    <line x1="150" y1="150" x2="220" y2="210" />
+                                </g>
+                                <circle cx="150" cy="150" r="24" fill="#0D1017" stroke="#38BDF8" stroke-width="2"/>
+                                <text x="150" y="154" fill="#38BDF8" font-family="JetBrains Mono" font-size="8" text-anchor="middle">CANON</text>
+
+                                <circle cx="80" cy="90" r="18" fill="#0D1017" stroke="#F59E0B" stroke-width="1.5"/>
+                                <text x="80" y="93" fill="#F59E0B" font-family="JetBrains Mono" font-size="7" text-anchor="middle">CAKERÏ</text>
+
+                                <circle cx="220" cy="90" r="18" fill="#0D1017" stroke="#38BDF8" stroke-width="1.5"/>
+                                <text x="220" y="93" fill="#38BDF8" font-family="JetBrains Mono" font-size="7" text-anchor="middle">#NBA</text>
+
+                                <circle cx="80" cy="210" r="18" fill="#0D1017" stroke="#38BDF8" stroke-width="1.5"/>
+                                <text x="80" y="213" fill="#38BDF8" font-family="JetBrains Mono" font-size="7" text-anchor="middle">CaffeineMD</text>
+
+                                <circle cx="220" cy="210" r="18" fill="#0D1017" stroke="#F59E0B" stroke-width="1.5"/>
+                                <text x="220" y="213" fill="#F59E0B" font-family="JetBrains Mono" font-size="7" text-anchor="middle">YSL ANIME</text>
+                            </svg>
+                        </div>
+                        <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                            <span>TEHWIZ PRODUCTIONS</span>
+                            <span class="text-cyan-400">CANON HUB</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-7" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow top-1/3 left-1/4"></div>
+            <div class="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-5 space-y-4 sm:space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>07 // MACHINE COMMONS</span>
+                    </div>
+                    <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                        Agent Legibility. First-Class /llms.txt Manifest & Backlink Authority.
+                    </h2>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">
+                        Why this architecture sees around corners: autonomous crawlers and LLM agents require deterministic context. We publish machine-legible manifests as first-class products so every agent indexing the web understands our divisions, APIs, and sibling hubs without hallucination.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-3 pt-1">
+                        <button onclick="copyLlmsTxt()" class="bg-cyan-500 hover:bg-cyan-400 text-obsidian px-4 sm:px-5 py-2.5 rounded-xl font-display font-bold text-xs tracking-wide transition-all shadow-lg shadow-cyan-500/20 flex items-center gap-2">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                            <span id="copy-btn-text">COPY /LLMS.TXT MANIFEST</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7">
+                    <div class="glass-panel rounded-2xl overflow-hidden border border-slate-800">
+                        <div class="bg-slate-900/90 px-4 py-2.5 border-b border-slate-800 flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500/80"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+                                <span class="text-xs font-mono text-slate-400 ml-2">https://isicecakeoisis.com/llms.txt</span>
+                            </div>
+                            <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800">VERIFIED</span>
+                        </div>
+                        <div class="p-4 sm:p-5 bg-obsidian/90 font-mono text-[11px] sm:text-xs text-slate-300 max-h-56 sm:max-h-72 overflow-y-auto no-scrollbar space-y-2.5">
+                            <p class="text-cyan-400"># ISICECAKEOISIS INC. // Official Machine-Legible Manifest (/llms.txt)</p>
+                            <p class="text-slate-400">&gt; The next interface isn't a screen, it's an agent — we build for the agents.</p>
+                            
+                            <p class="text-white font-bold mt-2">## Corporate Identity</p>
+                            <p class="text-slate-400">- Legal Name: ISICECAKEOISIS INC. (Michigan C corporation, formation in progress)</p>
+                            <p class="text-slate-400">- Founder: Michael Scott Hoyt — Founder & Systems Architect (@hoytnix)</p>
+                            <p class="text-slate-400">- Positioning: Business-to-Agent (B2A) company — machine-legible APIs, MCP servers, Skills, llms.txt manifests as first-class products, plus embedded LLMs on-device.</p>
+
+                            <p class="text-white font-bold mt-2">## Products & Divisions</p>
+                            <p class="text-slate-400">- Yuli: AI character SDK (WIP) with on-device personality engine (Qwen2.5-0.5B fine-tuned on Reddit conversations, 100% offline iPhone runtime).</p>
+                            <p class="text-slate-400">- Aevloc (https://aevloc.com): Tap-to-review reputation SaaS ($15/mo or $97/yr Starter) + encrypted NTAG215 NFC countertop stands.</p>
+                            <p class="text-slate-400">- Purple Canary (https://purplecanarylab.com): $25 paper-chromatography harm-reduction test kits + "What Was In That Joint Bro!?" book ($4.99).</p>
+                            <p class="text-slate-400">- CaffeineMD (https://caffeinemd.wiki): Local-first open-source knowledge OS.</p>
+                            <p class="text-slate-400">- TehWiz Productions (https://tehwiz.com): Public agency side.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-8" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow bottom-1/3 right-1/3"></div>
+            <div class="max-w-4xl w-full mx-auto relative z-10 space-y-6 sm:space-y-8">
+                <div class="text-center space-y-3 sm:space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>08 // ACCREDITED INVESTOR INQUIRIES</span>
+                    </div>
+                    <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                        Partner With the Business-to-Agent Ecosystem.
+                    </h2>
+                    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-2xl mx-auto">
+                        ISICECAKEOISIS INC. unifies an on-device AI character SDK (Yuli), agent-operable SaaS and encrypted NTAG215 NFC hardware (Aevloc), physical harm-reduction kits (Purple Canary), a local-first open-source knowledge OS (CaffeineMD), and original multi-format narrative IP under a single Business-to-Agent (B2A) architecture led by Founder & Systems Architect Michael Scott Hoyt (<span class="text-cyan-400">@hoytnix</span>).
+                    </p>
+                </div>
+
+                <div class="glass-card p-5 sm:p-7 rounded-3xl border border-cyan-500/20 space-y-5">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
+                        <div>
+                            <span class="text-[10px] font-mono text-cyan-400">CORPORATE FORMATION STATUS</span>
+                            <p class="text-xs text-slate-300 mt-0.5">ISICECAKEOISIS INC. is a Michigan C corporation currently in formation — Articles of Incorporation are drafted and approved, with state filing intentionally parked until a target revenue threshold is met.</p>
+                        </div>
+                        <button onclick="openInvestorModal()" class="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-400 text-obsidian px-5 py-2.5 rounded-xl font-display font-bold text-xs tracking-wide transition-all shadow-lg shadow-cyan-500/25 shrink-0 flex items-center justify-center gap-2">
+                            <i data-lucide="message-square" class="w-4 h-4"></i>
+                            <span>Request Investor Materials</span>
+                        </button>
+                    </div>
+
+                    <div class="p-3.5 rounded-2xl bg-amber-950/20 border border-amber-900/40 text-amber-200/80 text-[10px] sm:text-[11px] font-mono leading-relaxed space-y-1.5">
+                        <div class="flex items-center gap-2 font-bold text-amber-400">
+                            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+                            <span>SECURITIES COMPLIANCE NOTICE</span>
+                        </div>
+                        <p>Nothing on this website constitutes an offer to sell, or a solicitation of an offer to buy, any securities. Any offering will be made only to qualified investors in compliance with applicable securities laws.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="slide-9" class="snap-section px-4 sm:px-8 relative">
+            <div class="ambient-glow bottom-10 left-1/2 -translate-x-1/2"></div>
+            <div class="max-w-6xl w-full mx-auto relative z-10 space-y-8 sm:space-y-10">
+                <div class="text-center space-y-3">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                        <span>09 // ECOSYSTEM TOPOLOGY & COLOPHON</span>
+                    </div>
+                    <h2 class="font-display text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+                        Six Sibling Hubs. One B2A Standard.
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
+                    <a href="https://tehwiz.com" target="_blank" class="glass-card p-3 sm:p-4 rounded-2xl hover:border-cyan-400/50 transition-all text-center group">
+                        <span class="text-xs font-mono text-cyan-400 group-hover:text-white transition-colors">tehwiz.com</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1">TehWiz Productions — Public Agency Hub</p>
+                    </a>
+                    <a href="https://aevloc.com" target="_blank" class="glass-card p-3 sm:p-4 rounded-2xl hover:border-cyan-400/50 transition-all text-center group">
+                        <span class="text-xs font-mono text-cyan-400 group-hover:text-white transition-colors">aevloc.com</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1">Tap-to-Review Reputation SaaS + NFC</p>
+                    </a>
+                    <a href="https://purplecanarylab.com" target="_blank" class="glass-card p-3 sm:p-4 rounded-2xl hover:border-cyan-400/50 transition-all text-center group">
+                        <span class="text-xs font-mono text-cyan-400 group-hover:text-white transition-colors">purplecanarylab.com</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1">Harm-Reduction Chromatography Lab</p>
+                    </a>
+                    <a href="https://caffeinemd.wiki" target="_blank" class="glass-card p-3 sm:p-4 rounded-2xl hover:border-cyan-400/50 transition-all text-center group">
+                        <span class="text-xs font-mono text-cyan-400 group-hover:text-white transition-colors">caffeinemd.wiki</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1">Local-First Open-Source Knowledge OS</p>
+                    </a>
+                    <a href="https://alembic.quest" target="_blank" class="glass-card p-3 sm:p-4 rounded-2xl hover:border-cyan-400/50 transition-all text-center group">
+                        <span class="text-xs font-mono text-cyan-400 group-hover:text-white transition-colors">alembic.quest</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1">Sibling Ecosystem Hub</p>
+                    </a>
+                    <a href="https://alchememe.com" target="_blank" class="glass-card p-3 sm:p-4 rounded-2xl hover:border-cyan-400/50 transition-all text-center group">
+                        <span class="text-xs font-mono text-cyan-400 group-hover:text-white transition-colors">alchememe.com</span>
+                        <p class="text-[10px] sm:text-[11px] text-slate-400 mt-1">Sibling Ecosystem Hub</p>
+                    </a>
+                </div>
+
+                <div class="pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] font-mono text-slate-500">
+                    <div>COPYRIGHT 2026 ISICECAKEOISIS INC. A TEHWIZ PRODUCTION.</div>
+                    <div class="flex items-center gap-4">
+                        <button onclick="toggleLowPowerMode()" id="low-power-btn" class="hover:text-cyan-400 transition-colors">LOW-POWER: OFF</button>
+                        <span>//</span>
+                        <a href="#slide-1" class="hover:text-cyan-400 transition-colors">Return to 01 / Goomba Story</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <div id="menu-modal" class="fixed inset-0 z-50 bg-obsidian/90 backdrop-blur-2xl hidden flex flex-col overflow-y-auto p-4 sm:p-8 lg:p-12 transition-all duration-300">
+        <!-- Ambient Decorative Glows inside Menu -->
+        <div class="ambient-glow top-10 left-1/4 opacity-60"></div>
+        <div class="ambient-glow bottom-10 right-1/4 opacity-60"></div>
+
+        <div class="max-w-5xl w-full mx-auto space-y-6 sm:space-y-8 my-auto relative z-10">
+            <!-- Header -->
+            <div class="flex items-center justify-between border-b border-slate-800/80 pb-5">
+                <div class="flex items-center gap-3.5">
+                    <div class="w-10 h-10 rounded-2xl bg-cyan-500/10 border border-cyan-400/30 flex items-center justify-center text-cyan-400 shadow-lg shadow-cyan-500/10">
+                        <i data-lucide="compass" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-mono tracking-widest text-cyan-400 uppercase block">ISICECAKEOISIS INC. // SYSTEM DIRECTORY</span>
+                        <h2 class="font-display text-2xl sm:text-3xl font-bold text-white tracking-tight">Menu</h2>
+                    </div>
+                </div>
+                <button onclick="toggleMenuModal()" class="glass-panel p-3 rounded-2xl text-slate-400 hover:text-white hover:border-cyan-400/60 hover:bg-cyan-950/40 transition-all group shadow-lg" title="Close Menu (Esc)">
+                    <i data-lucide="x" class="w-5 h-5 group-hover:rotate-90 transition-transform duration-300"></i>
+                </button>
+            </div>
+
+            <!-- Main Navigation Grid -->
+            <div class="space-y-3">
+                <div class="flex items-center justify-between px-1">
+                    <span class="text-[10px] font-mono tracking-widest text-slate-400 uppercase flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                        <span>Menu</span>
+                    </span>
+                    <span class="text-[10px] font-mono text-slate-500">01 — 09 VIEWPORTS</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                    <!-- 01 // Goomba Origin -->
+                    <button onclick="navigateToSlide(1)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">01 // ORIGIN</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Goomba Story</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">MS.AI &amp; Yuli NPC SDK origin</p>
+                        </div>
+                    </button>
+
+                    <!-- 02 // Investment Thesis -->
+                    <button onclick="navigateToSlide(2)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="network" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">02 // THESIS</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">B2A Architecture</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">Why agents are the next market</p>
+                        </div>
+                    </button>
+
+                    <!-- 03 // Yuli SDK -->
+                    <button onclick="navigateToSlide(3)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">03 // FLAGSHIP SDK</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Yuli AI SDK</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">Offline Qwen2.5-0.5B persona engine</p>
+                        </div>
+                    </button>
+
+                    <!-- 04 // Aevloc -->
+                    <button onclick="navigateToSlide(4)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="Smartphone-nfc" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">04 // SAAS + NFC</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Aevloc</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">NTAG215 stands &amp; reputation API</p>
+                        </div>
+                    </button>
+
+                    <!-- 05 // Purple Canary -->
+                    <button onclick="navigateToSlide(5)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="flask-conical" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">05 // HARM REDUCTION</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Purple Canary</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">$25 chromatography kit &amp; book</p>
+                        </div>
+                    </button>
+
+                    <!-- 06 // Lore & Ecosystem -->
+                    <button onclick="navigateToSlide(6)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">06 // NARRATIVE IP</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Lore &amp; Canon</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">CAKERÏ, #NBA, YSL &amp; CaffeineMD</p>
+                        </div>
+                    </button>
+
+                    <!-- 07 // Machine Commons -->
+                    <button onclick="navigateToSlide(7)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="file-code-2" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">07 // MANIFEST</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Machine Commons</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">First-class /llms.txt legibility</p>
+                        </div>
+                    </button>
+
+                    <!-- 08 // Investor Inquiries -->
+                    <button onclick="navigateToSlide(8)" class="group relative glass-card p-4 rounded-2xl border border-amber-500/30 hover:border-amber-400/70 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-amber-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-amber-950/60 border border-amber-700/50 group-hover:bg-amber-400 group-hover:text-obsidian text-amber-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="landmark" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-amber-400">08 // CAPITAL</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-amber-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Investor Inquiries</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">Accredited inquiry &amp; compliance</p>
+                        </div>
+                    </button>
+
+                    <!-- 09 // Colophon -->
+                    <button onclick="navigateToSlide(9)" class="group relative glass-card p-4 rounded-2xl border border-slate-800/80 hover:border-cyan-400/60 hover:bg-slate-900/90 transition-all duration-300 text-left flex items-start gap-3.5 shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-0.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-cyan-950/60 border border-cyan-800/50 group-hover:bg-cyan-400 group-hover:text-obsidian text-cyan-400 flex items-center justify-center shrink-0 transition-all duration-300">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div class="min-w-0 flex-1">
+                            <div class="flex items-center justify-between">
+                                <span class="text-[10px] font-mono text-cyan-400">09 // TOPOLOGY</span>
+                                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-slate-600 group-hover:text-cyan-400 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                            </div>
+                            <h3 class="font-display font-bold text-white text-sm sm:text-base mt-0.5 truncate">Ecosystem &amp; Colophon</h3>
+                            <p class="text-[11px] text-slate-400 truncate mt-0.5">Six sibling hubs &amp; system state</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Quick Directives + Sibling Hubs -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <!-- Quick Actions -->
+                <div class="lg:col-span-5 glass-panel p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono tracking-widest text-cyan-400 uppercase flex items-center gap-1.5">
+                            <i data-lucide="terminal" class="w-3.5 h-3.5"></i>
+                            <span>Quick Directives</span>
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-500">B2A ACTIONS</span>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-2">
+                        <button onclick="toggleMenuModal(); openInvestorModal();" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-obsidian font-display font-bold text-xs transition-all shadow-md shadow-cyan-500/20">
+                            <span class="flex items-center gap-2"><i data-lucide="message-square" class="w-4 h-4"></i> Request Investor Materials</span>
+                            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                        <button onclick="toggleMenuModal(); copyLlmsTxt();" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/60 text-xs font-mono text-slate-300 hover:text-cyan-400 border border-slate-800 hover:border-cyan-500/40 transition-all">
+                            <span class="flex items-center gap-2"><i data-lucide="copy" class="w-3.5 h-3.5 text-cyan-400"></i> Copy /llms.txt Manifest</span>
+                            <span class="text-[10px] text-slate-500">CLIPBOARD</span>
+                        </button>
+                        <button onclick="toggleMenuModal(); toggleLowPowerMode();" class="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-cyan-950/60 text-xs font-mono text-slate-300 hover:text-cyan-400 border border-slate-800 hover:border-cyan-500/40 transition-all">
+                            <span class="flex items-center gap-2"><i data-lucide="zap-off" class="w-3.5 h-3.5 text-amber-400"></i> Toggle Low-Power Mode</span>
+                            <span class="text-[10px] text-slate-500">60FPS / STATIC</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sibling Hubs -->
+                <div class="lg:col-span-7 glass-panel p-5 rounded-2xl flex flex-col justify-between space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-mono tracking-widest text-cyan-400 uppercase flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                            <span>Six Sibling Ecosystem Hubs</span>
+                        </span>
+                        <span class="text-[10px] font-mono text-slate-500">VERIFIED DOMAINS</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                        <a href="https://tehwiz.com" target="_blank" class="group p-3 rounded-xl bg-slate-900/70 hover:bg-cyan-950/50 border border-slate-800/80 hover:border-cyan-400/50 transition-all flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-cyan-400">
+                                <i data-lucide="radio" class="w-4 h-4"></i>
+                                <i data-lucide="external-link" class="w-3 h-3 opacity-50 group-hover:opacity-100"></i>
+                            </div>
+                            <span class="text-xs font-mono font-semibold text-white group-hover:text-cyan-300 mt-2">tehwiz.com</span>
+                            <span class="text-[10px] text-slate-400 truncate">Public Agency Face</span>
+                        </a>
+                        <a href="https://aevloc.com" target="_blank" class="group p-3 rounded-xl bg-slate-900/70 hover:bg-cyan-950/50 border border-slate-800/80 hover:border-cyan-400/50 transition-all flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-cyan-400">
+                                <i data-lucide="star" class="w-4 h-4"></i>
+                                <i data-lucide="external-link" class="w-3 h-3 opacity-50 group-hover:opacity-100"></i>
+                            </div>
+                            <span class="text-xs font-mono font-semibold text-white group-hover:text-cyan-300 mt-2">aevloc.com</span>
+                            <span class="text-[10px] text-slate-400 truncate">Reputation SaaS + NFC</span>
+                        </a>
+                        <a href="https://purplecanarylab.com" target="_blank" class="group p-3 rounded-xl bg-slate-900/70 hover:bg-cyan-950/50 border border-slate-800/80 hover:border-cyan-400/50 transition-all flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-cyan-400">
+                                <i data-lucide="test-tube-diagonal" class="w-4 h-4"></i>
+                                <i data-lucide="external-link" class="w-3 h-3 opacity-50 group-hover:opacity-100"></i>
+                            </div>
+                            <span class="text-xs font-mono font-semibold text-white group-hover:text-cyan-300 mt-2">purplecanarylab.com</span>
+                            <span class="text-[10px] text-slate-400 truncate">Harm-Reduction Lab</span>
+                        </a>
+                        <a href="https://caffeinemd.wiki" target="_blank" class="group p-3 rounded-xl bg-slate-900/70 hover:bg-cyan-950/50 border border-slate-800/80 hover:border-cyan-400/50 transition-all flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-cyan-400">
+                                <i data-lucide="book-open" class="w-4 h-4"></i>
+                                <i data-lucide="external-link" class="w-3 h-3 opacity-50 group-hover:opacity-100"></i>
+                            </div>
+                            <span class="text-xs font-mono font-semibold text-white group-hover:text-cyan-300 mt-2">caffeinemd.wiki</span>
+                            <span class="text-[10px] text-slate-400 truncate">Local-First Knowledge OS</span>
+                        </a>
+                        <a href="https://alembic.quest" target="_blank" class="group p-3 rounded-xl bg-slate-900/70 hover:bg-cyan-950/50 border border-slate-800/80 hover:border-cyan-400/50 transition-all flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-cyan-400">
+                                <i data-lucide="flame" class="w-4 h-4"></i>
+                                <i data-lucide="external-link" class="w-3 h-3 opacity-50 group-hover:opacity-100"></i>
+                            </div>
+                            <span class="text-xs font-mono font-semibold text-white group-hover:text-cyan-300 mt-2">alembic.quest</span>
+                            <span class="text-[10px] text-slate-400 truncate">Sibling Ecosystem Hub</span>
+                        </a>
+                        <a href="https://alchememe.com" target="_blank" class="group p-3 rounded-xl bg-slate-900/70 hover:bg-cyan-950/50 border border-slate-800/80 hover:border-cyan-400/50 transition-all flex flex-col justify-between">
+                            <div class="flex items-center justify-between text-cyan-400">
+                                <i data-lucide="atom" class="w-4 h-4"></i>
+                                <i data-lucide="external-link" class="w-3 h-3 opacity-50 group-hover:opacity-100"></i>
+                            </div>
+                            <span class="text-xs font-mono font-semibold text-white group-hover:text-cyan-300 mt-2">alchememe.com</span>
+                            <span class="text-[10px] text-slate-400 truncate">Sibling Ecosystem Hub</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="investor-modal" class="fixed inset-0 z-50 bg-obsidian/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="glass-panel w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border border-cyan-500/30 p-6 sm:p-8 space-y-6 relative">
+            <button onclick="openInvestorModal()" class="absolute top-6 right-6 text-slate-400 hover:text-white">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+            
+            <div class="space-y-2">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/50 border border-cyan-800/50 text-cyan-400 text-xs font-mono">
+                    <span>ACCREDITED INQUIRY</span>
+                </div>
+                <h3 class="font-display text-2xl font-bold text-white">Request Investor Materials</h3>
+                <p class="text-xs sm:text-sm text-slate-300">
+                    Connect directly with Founder & Systems Architect Michael Scott Hoyt regarding ISICECAKEOISIS INC. and the B2A ecosystem.
+                </p>
+            </div>
+
+            <form onsubmit="handleInvestorSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1">FULL NAME / ENTITY</label>
+                    <input type="text" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400" placeholder="e.g. Jane Doe / Family Office">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1">SECURE EMAIL</label>
+                    <input type="email" required class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400" placeholder="e.g. jane@fund.com">
+                </div>
+                <div>
+                    <label class="block text-xs font-mono text-slate-400 mb-1">INQUIRY SCOPE</label>
+                    <select class="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-cyan-400">
+                        <option>General Investor Deck & Thesis</option>
+                        <option>Yuli SDK Partnership (BSL-1.1 / Unreal / Unity)</option>
+                        <option>Aevloc SaaS & NFC Stand Distribution</option>
+                        <option>Purple Canary / CaffeineMD Ecosystem</option>
+                    </select>
+                </div>
+                <div class="pt-2">
+                    <button type="submit" class="w-full bg-cyan-500 hover:bg-cyan-400 text-obsidian py-3 rounded-xl font-display font-bold text-xs tracking-wide transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center gap-2">
+                        <span>SUBMIT ACCREDITED INQUIRY</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <p class="text-[10px] font-mono text-slate-500 text-center">
+                    Inquiries are routed securely to <a href="https://tehwiz.com" target="_blank" class="text-cyan-400 hover:underline">tehwiz.com</a>.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        const totalSlides = 9;
+        const slideTitles = [
+            "Goomba Origin",
+            "Investment Thesis",
+            "Yuli AI SDK",
+            "Aevloc SaaS",
+            "Purple Canary",
+            "Lore & Ecosystem",
+            "Machine Commons",
+            "Investor Funnel",
+            "Colophon"
+        ];
+
+        // Build Side Dot Navigation
+        const dotNav = document.getElementById('dot-nav');
+        for (let i = 1; i <= totalSlides; i++) {
+            const btn = document.createElement('button');
+            btn.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${i === 1 ? 'bg-cyan-400 scale-125' : 'bg-slate-700 hover:bg-slate-500'}`;
+            btn.title = `Slide 0${i} // ${slideTitles[i-1]}`;
+            btn.onclick = () => {
+                document.getElementById(`slide-${i}`).scrollIntoView({ behavior: 'smooth' });
+            };
+            dotNav.appendChild(btn);
+        }
+
+        // Intersection Observer for Active Slide Tracking
+        const observerOptions = {
+            root: document.getElementById('deck-container'),
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    const index = parseInt(id.replace('slide-', '')) - 1;
+                    
+                    document.getElementById('current-slide-num').textContent = `0${index + 1}`;
+                    document.getElementById('current-slide-title').textContent = slideTitles[index];
+
+                    const dots = dotNav.children;
+                    for (let j = 0; j < dots.length; j++) {
+                        if (j === index) {
+                            dots[j].className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 bg-cyan-400 scale-125';
+                        } else {
+                            dots[j].className = 'w-2.5 h-2.5 rounded-full transition-all duration-300 bg-slate-700 hover:bg-slate-500';
+                        }
+                    }
+                }
+            });
+        }, observerOptions);
+
+        for (let i = 1; i <= totalSlides; i++) {
+            const section = document.getElementById(`slide-${i}`);
+            if (section) observer.observe(section);
+        }
+
+        // System Menu Toggle
+        let menuOpen = false;
+        function toggleMenuModal() {
+            menuOpen = !menuOpen;
+            const modal = document.getElementById('menu-modal');
+            if (menuOpen) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function navigateToSlide(num) {
+            toggleMenuModal();
+            document.getElementById(`slide-${num}`).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Investor Modal Toggle
+        let investorModalOpen = false;
+        function openInvestorModal() {
+            if (menuOpen) toggleMenuModal();
+            investorModalOpen = !investorModalOpen;
+            const modal = document.getElementById('investor-modal');
+            if (investorModalOpen) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function handleInvestorSubmit(e) {
+            e.preventDefault();
+            alert('Accredited inquiry submitted successfully. Routed to TehWiz Productions.');
+            openInvestorModal();
+        }
+
+        // Copy /llms.txt Manifest
+        function copyLlmsTxt() {
+            const text = `# ISICECAKEOISIS INC. // Official Machine-Legible Manifest (/llms.txt)
+> The next interface isn't a screen, it's an agent — we build for the agents.
+
+## Corporate Identity
+- Legal Name: ISICECAKEOISIS INC. (Michigan C corporation, formation in progress)
+- Founder: Michael Scott Hoyt — Founder & Systems Architect (@hoytnix)
+- Positioning: Business-to-Agent (B2A) company — machine-legible APIs, MCP servers, Skills, llms.txt manifests as first-class products, plus embedded LLMs on-device.
+
+## Products & Divisions
+- Yuli: AI character SDK (WIP) with on-device personality engine (Qwen2.5-0.5B).
+- Aevloc (https://aevloc.com): Tap-to-review reputation SaaS + encrypted NTAG215 NFC stands.
+- Purple Canary (https://purplecanarylab.com): Paper-chromatography harm-reduction test kits + book.
+- CaffeineMD (https://caffeinemd.wiki): Local-first open-source knowledge OS.
+- TehWiz Productions (https://tehwiz.com): Public-facing agency side.`;
+
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const btnText = document.getElementById('copy-btn-text');
+                if (btnText) {
+                    btnText.textContent = 'MANIFEST COPIED!';
+                    setTimeout(() => { btnText.textContent = 'COPY /LLMS.TXT MANIFEST'; }, 2000);
+                } else {
+                    alert('Manifest copied to clipboard.');
+                }
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Low Power Mode Toggle
+        let lowPower = false;
+        function toggleLowPowerMode() {
+            lowPower = !lowPower;
+            const body = document.body;
+            const btn = document.getElementById('low-power-btn');
+            if (lowPower) {
+                body.classList.add('low-power');
+                if (btn) btn.textContent = 'LOW-POWER: ON';
+                if (btn) btn.classList.add('text-cyan-400');
+            } else {
+                body.classList.remove('low-power');
+                if (btn) btn.textContent = 'LOW-POWER: OFF';
+                if (btn) btn.classList.remove('text-cyan-400');
+            }
+        }
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'm') {
+                e.preventDefault();
+                toggleMenuModal();
+            }
+            if (e.key === 'Escape') {
+                if (menuOpen) toggleMenuModal();
+                if (investorModalOpen) openInvestorModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+# Progress: ISICECAKEOISIS INC.
+
+## Status
+- [x] Memory Bank initialized and rehydrated
+- [x] Monolithic HTML decomposed into modular React 19 + TypeScript components
+- [x] Created `src/types/index.ts` with domain interfaces
+- [x] Created `src/data/ecosystemData.ts` with slides, pillars, sibling hubs, canon works, and `/llms.txt`
+- [x] Created layout modules (`Header`, `SideDotNav`, `SlideIndicator`, `AmbientGlow`)
+- [x] Created 5 modular SVG diagram components (`AgentMesh`, `RadarAnimation`, `NfcRipple`, `Chromatography`, `CanonGraph`)
+- [x] Created 9 isolated slide modules (`Slide01Origin` through `Slide09Colophon`)
+- [x] Created interactive modal dialogs (`MenuModal`, `InvestorModal`)
+- [x] Implemented root deck orchestrator in `App.tsx` with IntersectionObserver and keyboard shortcuts
+- [x] Enhanced `server.ts` with direct `GET /llms.txt` and `POST /api/investor-inquiry`
+- [x] Updated Header navigation: icon-only buttons, added GitHub profile link (`https://github.com/hoytnix`), moved MENU to far right, and removed B2A badge
+- [x] Converted Inquiry modal from form to direct contact interface with obfuscated phone and email
+- [x] Integrated exact social media links in Inquiry modal and structured schema (LinkedIn, YouTube, GitHub, TehWiz)
+- [x] Cleaned corporate status across all touchpoints (removed references to pending formation)
+- [x] Integrated official 788x316px brand logo (`https://i.ibb.co/3mrktB3R/504.png`)
+- [x] Updated Yuli to "AI Character SDK (Beta)" with dual model architectures (Qwen2.5-0.5B and Gemma 4 E2B)
+- [x] Integrated live in-browser Yuli demo at `https://yuli.tehwiz.com` across Slide 03, Menu modal, and `/llms.txt` manifests
+- [x] Updated Slide 04 (Aevloc) to focus on plan inclusions without mentioning prices:
+  - SMB Growth plan includes up to 6 locations
+  - Agency plan includes up to 100 locations
+  - Each plan includes unlimited scans
+  - Each location includes a complimentary NFC Tap-To-Review sticker pre-programmed to your Aevloc app with FREE global S&H!!
+  - Excised all pricing mentions across Slide 04, diagram badges, `ecosystemData.ts`, `server.ts`, and `Slide07Manifest.tsx`
+- [x] Updated Slide 04 NFC diagram (`NfcRippleDiagram.tsx`) to feature 5 golden glowing stars floating in orbit around the NTAG215 sensor with staggered animation
+- [x] Updated Slide 05 (Purple Canary) to showcase two dedicated sites with zero price mentions:
+  - (1) `purplecanarylab.com`: The free scanner app for paper chromatography
+  - (2) `book.purplecanarylab.com`: The free e-book ("What Was In That Joint Bro!?")
+  - Removed all references to $25 test kits and $4.99 paperback across Slide 05, `ecosystemData.ts`, `Slide07Manifest.tsx`, `server.ts`, and `MenuModal.tsx`
+  - Kept chromatography capillary elution animation (`ChromatographyDiagram.tsx`) intact
+- [x] Transformed Page 6 / Slide 06 into CaffeineMD:
+  - Canonical URL anchored to `https://www.caffeinemd.wiki`
+  - Highlighted as FLOSS alternative to Obsidian & Notion with local-first markdown notes, zero cloud lock-in, and bidirectional `[[wikilinks]]`
+  - Created animated demo Markdown editor illustration (`MarkdownEditorDiagram.tsx`) featuring real-time typewriter simulation, Split/Source/Preview views, interactive `graph.canvas` knowledge graph tab, and zero-telemetry local-first indicator
+  - Updated `ecosystemData.ts`, `Slide06CaffeineMD.tsx`, `MenuModal.tsx`, `App.tsx`, and `/llms.txt` in both backend `server.ts` and frontend
+- [x] Transformed Page 7 / Slide 07 into TehWiz Productions Mobile Games:
+  - (1) **Ramen Nights & Budget Bites**: Clicker/idle restaurant sim tycoon game; prominent links to `https://ramen.tehwiz.com` (BETA) & `https://tehwiz.itch.io/ramen-nights-and-budget-bites` (Release Candidate on Itch.io); includes the complete Tokyo University Economics capstone lore narrative across 5 Tokyo districts.
+  - (2) **Fuck Ur Neighbor**: Live trick-taking card game at `https://fun.tehwiz.com`; highlights the core dynamic rule where whatever suit leads is Trump.
+  - (3) **$!#?**: WYSIWYG Mechanical-style Slot machine which is probably fair at `https://hoytnix.github.io/Bleep/`.
+  - Built `GamesInteractivePreview.tsx` with 3 working simulators:
+    - Tokyo Economics Tycoon simulator (steaming ramen bowl clicker, particles, 5 districts, micro-pricing elasticity slider, supply chain bulk logistics toggle).
+    - Trick-taking table with bot seats and dynamic lead-suit trump banner.
+    - 3-reel mechanical slot machine with tumbler animation, ratchet audio synthesis, and cryptographic seed readout.
+  - Synthesized Web Audio API sound effects (gentle chimes, card flips, ratchets, jackpot fanfare) with sound toggle.
+  - Updated `ecosystemData.ts`, `server.ts`, `MenuModal.tsx`, and `App.tsx`.
+- [x] Transformed Page 8 / Slide 08 into bad-ass B2A Executive Command & Inquiry Terminal:
+  - Replaced basic teaser card with full-screen tactical command terminal directly rendered on the slide.
+  - Implemented dynamic matrix unscrambler cipher animation for phone (`+1 (231) 333 - 4338`) and email (`cakeri.paper@gmail.com`) with sound synthesis and lock/unlock toggles.
+  - Integrated one-click `tel:` call, `mailto:` compose, and clipboard copy with visual feedback.
+  - Added tactical relay channels to Michael Scott Hoyt (@hoytnix) across LinkedIn, GitHub, YouTube, and TehWiz.
+  - Added interactive Strategic Inquiry Matrix across 6 portfolio sectors with fast dispatch to `/api/investor-inquiry` and pre-filled email composer.
+  - Added live diagnostic terminal feed, cybernetic Web Audio synthesis toggle, popout modal launcher, and regulatory compliance perimeter notice.
+- [x] Transformed Page 9 / Slide 09 strictly into TehWiz Productions:
+  - Title: "A TehWiz Production." (The footer on all of our properties)
+  - Motto: "Hacking FLOSS & Composing Code With Prose Since 2009."
+  - Excised redundant property links (CaffeineMD, Aevloc, Purple Canary, Yuli have their own pages)
+  - Incorporated rich narrative of the studio founded in 2009 by Michael Scott Hoyt (@hoytnix)
+  - Added interactive Hallmark Seal stamping mechanism and 3-tab terminal inspector (creed.txt, footer.spec, studio.json)
+  - Retained clean colophon footer with low-power toggle and return-to-origin navigation
+  - Updated ecosystemData.ts, server.ts, and MenuModal.tsx
+- [x] Friendly Refactor of Slide 08 Inquiry Matrix:
+  - Eliminated intimidating FBI/NSA dox jargon from the right-column inquiry area.
+  - Replaced cold military labels with conversational, approachable copy: "Start a Conversation", "What would you like to discuss?", "Your Name", "Your Email or Phone", "Your Message (Optional)".
+  - Renamed and organized 6 topics with clean category badges (B2A Architecture, AI Character SDK, Hardware & SaaS, Harm Reduction, Mobile Games, Investment & Partnerships).
+  - Removed dead "Transmit Via Uplink" button entirely.
+  - Changed "Launch Direct Mail" to prominent, primary "Send Email" button with personalized, pre-formatted draft to `cakeri.paper@gmail.com`.
+  - Added handy "Copy Draft" button for users on webmail platforms.
+  - Replaced fake terminal logs with a reassuring personal reply guarantee from Michael Scott Hoyt.
+- [x] Build compilation & TypeScript verification passed with 0 errors
+
+

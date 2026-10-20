@@ -1,0 +1,6 @@
+{
+  "name": "ISICECAKEOISIS INC. // B2A Systems",
+  "description": "Business-to-Agent (B2A) Systems Architecture: on-device personality SDK (Yuli), reputation SaaS & encrypted NFC stands (Aevloc), harm-reduction lab (Purple Canary), and structured /llms.txt commons.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
