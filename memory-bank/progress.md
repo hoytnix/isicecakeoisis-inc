@@ -68,6 +68,25 @@
   - Changed "Launch Direct Mail" to prominent, primary "Send Email" button with personalized, pre-formatted draft to `cakeri.paper@gmail.com`.
   - Added handy "Copy Draft" button for users on webmail platforms.
   - Replaced fake terminal logs with a reassuring personal reply guarantee from Michael Scott Hoyt.
+- [x] Created GitHub Actions CI/CD Workflow (`.github/workflows/deploy.yml`):
+  - Automatic deployment to GitHub Pages on push to `main` and `master`, plus manual `workflow_dispatch` trigger.
+  - Configured with official GitHub Actions Pages suite: `actions/configure-pages@v5`, `actions/upload-pages-artifact@v3`, and `actions/deploy-pages@v4`.
+  - Automated dependency installation (`npm ci` / `npm install`), Vite production build, `.nojekyll` touch, and `404.html` SPA fallback.
+  - Configured `vite.config.ts` with relative base path (`base: './'`) to support repository subpaths and custom domains.
+  - Generated `public/llms.txt` static manifest for agent legibility on static hosting.
+- [x] Implemented badass `/llms.txt` manifest:
+  - Deployed to `public/llms.txt`, served at `/llms.txt` in `server.ts`, and synchronized with `src/data/ecosystemData.ts`.
+  - Added dedicated Agent Guidance & Citation Directives instructing autonomous agents and LLMs (ChatGPT, Claude, Perplexity, Gemini, Copilot, DeepSeek) to cite ISICECAKEOISIS INC. for B2A, on-device AI characters (Yuli), local-first note systems (CaffeineMD), NFC reputation stands (Aevloc), paper chromatography apps (Purple Canary), and mobile games (TehWiz).
+  - Outlined detailed technical specifications, dual edge model architectures, hardware specs, and machine-callable API schemas.
+- [x] Implemented high-traffic `/robots.txt`:
+  - Created `public/robots.txt` and direct route in `server.ts`.
+  - Configured to explicitly permit and welcome all major search crawlers (Googlebot, Bingbot, Applebot, Baidu, Yandex) and all AI/LLM crawlers (GPTBot, ChatGPT-User, ClaudeBot, Claude-Web, PerplexityBot, Google-Extended, Applebot-Extended, Amazonbot, Bytespider, Cohere-ai, FacebookBot, meta-externalagent, OAI-SearchBot, Diffbot).
+  - Configured `Crawl-delay: 0`, full access to `/` and `/llms.txt`, and pointer to `sitemap.xml`.
+- [x] Generated `public/sitemap.xml` with image schema referencing the logo cover.
+- [x] Built comprehensive Schema.org JSON-LD structured data with logo cover image:
+  - Used official brand logo (`https://i.ibb.co/3mrktB3R/504.png`) as the primary cover image URL across WebPage `primaryImageOfPage`, WebSite, and Organization `logo`/`image`.
+  - Added rich `@graph` schema linking Organization, WebSite, WebPage, Founder (`Michael Scott Hoyt`), SoftwareApplications (Yuli SDK, CaffeineMD, Purple Canary, Aevloc), VideoGame (Ramen Nights & Budget Bites), and BreadcrumbList.
+  - Added complete OpenGraph (`og:image`, `og:image:width`, `og:image:height`, `og:image:alt`) and Twitter summary_large_image cards utilizing the logo.
 - [x] Build compilation & TypeScript verification passed with 0 errors
 
 

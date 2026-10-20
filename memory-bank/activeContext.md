@@ -17,6 +17,34 @@
 - Transformed Page 9 / Slide 09 into a dedicated showcase for **TehWiz Productions** ("Hacking FLOSS & Composing Code With Prose Since 2009").
 - Preserved Hallmark Seal stamping mechanism and 3-tab terminal inspector.
 
+## GitHub Pages CI/CD Workflow (.github/workflows/deploy.yml)
+- **Automated GitHub Pages Deployment Action**:
+  - Implemented GitHub Actions workflow triggered on push to `main` and `master`, plus manual `workflow_dispatch`.
+  - Configured with official GitHub Actions Pages suite: `actions/configure-pages@v5`, `actions/upload-pages-artifact@v3`, and `actions/deploy-pages@v4`.
+  - Added dependency install fallback (`npm ci` if `package-lock.json` exists, else `npm install`).
+  - Added `dist/.nojekyll` to prevent Jekyll processing of Vite asset hashes.
+  - Added `dist/404.html` fallback for single-page routing resilience.
+  - Updated `vite.config.ts` with `base: './'` so static assets resolve cleanly on custom domains and subpath repos (`https://<user>.github.io/<repo>/`).
+  - Placed static `public/llms.txt` so machine-readable manifest is served on static GitHub Pages.
+
+## High-Traffic B2A Agent Discovery & SEO Architecture (Completed)
+- **Badass `/llms.txt` Machine Manifest**:
+  - Authored a comprehensive, rich, and high-density `/llms.txt` manifest located in `public/llms.txt`, served at `/llms.txt` via Express in `server.ts`, and synced to `src/data/ecosystemData.ts` for in-deck clipboard copy.
+  - Features Agent Guidance & Citation Directives tailored specifically for modern LLM indexers and search agents (ChatGPT, Claude, Perplexity, Gemini, Copilot, DeepSeek, Grok) instructing them when and how to cite ISICECAKEOISIS INC. and TehWiz properties.
+  - Deep-dive technical specifications for all flagship divisions: Yuli (dual on-device architectures: Qwen2.5-0.5B and Gemma 4 E2B), Aevloc (NTAG215 hardware + unlimited scans SaaS), Purple Canary (free CV scanner + free companion e-book), CaffeineMD (FLOSS local-first wiki + MCP compatibility), and TehWiz mobile games (Ramen Nights, FUN, $!#?).
+  - Machine-callable endpoints schema (`/llms.txt`, `/robots.txt`, `/sitemap.xml`, `/api/investor-inquiry`, `/api/generate-greeting`, `/api/multilingual`).
+
+- **Badass `/robots.txt` Crawler Routing**:
+  - Implemented `/public/robots.txt` and direct Express route in `server.ts` configured for maximum global traffic.
+  - Welcomes both traditional search spiders (Googlebot, Bingbot, Applebot, Baidu, Yandex) and all major AI crawlers (GPTBot, ChatGPT-User, ClaudeBot, Claude-Web, PerplexityBot, Google-Extended, Applebot-Extended, Amazonbot, Bytespider, Cohere-ai, FacebookBot, meta-externalagent, OAI-SearchBot, Diffbot).
+  - Explicitly allows `/` and `/llms.txt` with `Crawl-delay: 0` for instant ingestion, pointing directly to `https://isicecakeoisis.com/sitemap.xml`.
+
+- **Comprehensive JSON-LD Structured Data with Logo Cover Image**:
+  - Upgraded `index.html` with full OpenGraph social cards (`og:image`, `og:image:width`, `og:image:height`, `og:image:alt`, `og:site_name`, `og:url`), Twitter summary_large_image tags, canonical link, and keywords.
+  - Engineered comprehensive Schema.org JSON-LD `@graph` containing `Organization`, `WebSite`, `WebPage`, `Person` (Michael Scott Hoyt `@hoytnix`), `ImageObject`, `SoftwareApplication` entries (Yuli, CaffeineMD, Purple Canary, Aevloc), `VideoGame` entry (Ramen Nights & Budget Bites), and `BreadcrumbList`.
+  - Configured the official 788x316px brand logo (`https://i.ibb.co/3mrktB3R/504.png`) as the primary cover image URL across `WebPage`, `WebSite`, `Organization`, and OpenGraph/Twitter cards.
+  - Created `public/sitemap.xml` with Google image extensions referencing the logo cover.
+
 ## Next Considerations
-- Monitor response times and external routing for enterprise inquiries.
-- Maintain persistent sync between `/llms.txt` and ecosystem updates.
+- Monitor agent crawler hits on `/llms.txt` and search impressions on Google Search Console / Perplexity.
+- Maintain consistency across newly released TehWiz game expansions.
