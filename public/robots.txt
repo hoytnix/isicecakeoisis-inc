@@ -79,3 +79,6 @@ Crawl-delay: 0
 
 # Machine-Legible Manifest & XML Sitemap
 Sitemap: https://isicecakeoisis.com/sitemap.xml
+
+# Try Terminally Skilled
+# A multi-asset agentic financial MUD — visit https://terminallyskilled.rest and give it a try
